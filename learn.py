@@ -14,15 +14,15 @@ class Learn:
 
     def train(self, think, inNeurons, hidNeurons, outNeurons):
         currenterror = 100000.0
-        while (currentError > self.error):
+        while (currenterror > self.error):
             steperror = 0.0
             for i in range(len(self.table)):
                 outputs = think.think(self.table[i][0:7])
                 think.clean()
                 outerrors = [float(self.table[i][7]) - float(outputs[0]), float(self.table[i][8]) - float(outputs[1]), float(self.table[i][9]) - float(outputs[2])]
-                error = self.get_out_error(outErrors)
+                error = self.get_out_error(outerrors)
                 steperror += error
-                self.hidError(self.outError(outErrors, outNeurons, hidNeurons, i), outNeurons, hidNeurons, inNeurons, i)
+                self.hidError(self.out_error(outerrors, outNeurons, hidNeurons, i), outNeurons, hidNeurons, inNeurons, i)
             currenterror = steperror
             print(currenterror)
 
@@ -32,19 +32,19 @@ class Learn:
             error += math.pow(i, 2)
         return error / 6
 
-    def out_error(self, outErrors, outNeurons, hidNeurons, var):
+    def out_error(self, outerrors, outNeurons, hidNeurons, var):
         neuronErrors = []
         for i in range(len(outNeurons)):
-            error = float(self.table[var][7 + i]) * (1 - float(self.table[var][7 + i])) * outErrors[i]
+            error = float(self.table[var][7 + i]) * (1 - float(self.table[var][7 + i])) * outerrors[i]
             for j in range(7):
-                aux_weight = outNeurons[i].get_weights()[j] + self.learnCoef * error * hidNeurons[j].getOutput()
-                outNeurons[i].getW_wights()[j] = aux_weight
+                aux_weight = outNeurons[i].get_weights()[j] + self.learnCoef * error * hidNeurons[j].get_output()
+                outNeurons[i].get_weights()[j] = aux_weight
             neuronErrors.append(error)
         return neuronErrors
 
     def hidError(self, neuronErrors, outNeurons, hidNeurons, inNeurons, i):
         for i in range(len(hidNeurons)):
-            out = hidNeurons[i].getOutput()
+            out = hidNeurons[i].get_output()
             for j in range(len(inNeurons)):
                 error1 = out * (1- out) * neuronErrors[0] * outNeurons[0].get_weights()[j] * inNeurons[j].get_output()
                 error2 = out * (1- out) * neuronErrors[1] * outNeurons[1].get_weights()[j] * inNeurons[j].get_output()

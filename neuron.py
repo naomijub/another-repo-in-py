@@ -22,7 +22,7 @@ class Neuron:
         return self.weights
 
     def think(self, inputs):
-        self.output = self.pulse(self.setInputs(inputs))
+        self.output = self.pulse(self.set_inputs(inputs))
         return self.output
 
     def get_output(self):
